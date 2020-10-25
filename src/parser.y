@@ -52,6 +52,9 @@ void yyerror(char *);
 %token VOID
 %token WHILE
 
+%{ /* End of file */ %}
+%token END_OF_FILE
+
 %{ /* Integers */ %}
 %token INTEGER
 
@@ -62,7 +65,7 @@ void yyerror(char *);
 %token LEXICAL_ERROR
 
 %%
-program                     : function
+program                     : function END_OF_FILE {return 0;}
                             ;
 
 function                    : function_header block

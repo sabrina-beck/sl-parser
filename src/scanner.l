@@ -63,6 +63,9 @@ vars        return(VARS);
 void        return(VOID);
 while       return(WHILE);
 
+    /* End of file */
+<<EOF>>     return(END_OF_FILE);
+
     /* Integers */
 {DIGIT}+    return(INTEGER);
 
