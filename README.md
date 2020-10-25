@@ -50,3 +50,15 @@ etc ...
 ### Obs
 * The `all.zip` file mentioned had the files contained in the directory `tests` and the files `src/test_parser.h` and `test_parser.c`.
 * This parser is based on the scanner implemented previously. The scanner project can be found on [sl-scanner](https://github.com/sabrina-beck/sl-scanner)
+
+## Project Execution
+
+In order to run the program use the following command:
+```
+make run
+```
+
+In order to run the tests use:
+```
+make test
+```
