@@ -143,6 +143,11 @@ function_call_statement     : function_call SEMI_COLON
                             ;
 function_call               : IDENTIFIER OPEN_PAREN expression_list CLOSE_PAREN
 
+expression_list             :
+                            | expression
+                            | expression COMMA expression_list
+                            ;
+
 goto                        : GOTO IDENTIFIER SEMI_COLON
                             ;
 
@@ -188,10 +193,6 @@ factor                      : variable
 
 identifier_list             : IDENTIFIER
                             | IDENTIFIER COMMA identifier_list
-                            ;
-
-expression_list             : expression
-                            | expression COMMA expression_list
                             ;
 
 relational_operator         : LESS_OR_EQUAL
