@@ -134,16 +134,16 @@ unlabeled_statement         : assignment
                             | empty_statement
                             ;
 
-assignment                  : variable ASSIGN expression
+assignment                  : variable ASSIGN expression SEMI_COLON
                             ;
 variable                    : IDENTIFIER
                             ;
 
-function_call_statement     : function_call
+function_call_statement     : function_call SEMI_COLON
                             ;
 function_call               : IDENTIFIER OPEN_PAREN expression_list CLOSE_PAREN
 
-goto                        : GOTO IDENTIFIER
+goto                        : GOTO IDENTIFIER SEMI_COLON
                             ;
 
 return                      : RETURN SEMI_COLON
