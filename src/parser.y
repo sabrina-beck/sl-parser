@@ -52,9 +52,6 @@ void yyerror(char *);
 %token VOID
 %token WHILE
 
-%{ /* End of file */ %}
-%token END_OF_FILE
-
 %{ /* Integers */ %}
 %token INTEGER
 
