@@ -132,10 +132,12 @@ formal_parameter_list       : formal_parameter
                             | formal_parameter COMMA formal_parameter_list
                             ;
 formal_parameter            : expression_parameter
+                            | function_parameter
                             ;
 expression_parameter        : VAR identifier_list COLON IDENTIFIER
                             | identifier_list COLON IDENTIFIER
                             ;
+function_parameter          : function_header
 
 statement                   : IDENTIFIER COLON unlabeled_statement
                             | unlabeled_statement
