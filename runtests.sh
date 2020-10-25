@@ -14,14 +14,16 @@ for testFile in tests/input/*; do
   testNumber=$(echo $testFile | sed -e 's/[^0-9]//g')
   echo -n "Running test $testNumber"
 
-  testResultPath=$(find tests/output -regextype posix-egrep -regex ".*$testNumber.*")
+  expectedResponsePath=$(find tests/output -regextype posix-egrep -regex ".*$testNumber.*")
+  resultFile="${testResultDir}result$testNumber.res"
 
-  ./build/main < $testFile > $testResultPath
+  ./build/main < $testFile > $resultFile
 
-  DIFF=$(diff $testResultPath tests/output/${testResultFile})
+  DIFF=$(diff $resultFile $expectedResponsePath)
   if [ "$DIFF" != "" ]
   then
     echo -e " | ${RED}FAILED${NO_COLOR}"
+    diff --color $resultFile $expectedResponsePath
   else
     echo -e " | ${GREEN}SUCCESS${NO_COLOR}"
   fi
