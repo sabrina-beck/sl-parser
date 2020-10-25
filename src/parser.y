@@ -85,10 +85,10 @@ functions_section           :
 labels                      : LABELS identifier_list SEMI_COLON
                             ;
 
-variables                   : VARS declarations_list SEMI_COLON
+variables                   : VARS declarations_list
                             ;
-declarations_list           : declaration
-                            | declaration declarations_list
+declarations_list           : declaration SEMI_COLON
+                            | declaration SEMI_COLON declarations_list
                             ;
 declaration                 : identifier_list COLON type
                             ;
