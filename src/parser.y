@@ -71,9 +71,12 @@ function_header             : IDENTIFIER IDENTIFIER formal_parameters
                             | VOID IDENTIFIER formal_parameters
                             ;
 
-block                       : labels_section variables_section functions_section body
+block                       : labels_section types_section variables_section functions_section body
 labels_section              :
                             | labels
+                            ;
+types_section               :
+                            | types
                             ;
 variables_section           :
                             | variables
@@ -83,6 +86,14 @@ functions_section           :
                             ;
 
 labels                      : LABELS identifier_list SEMI_COLON
+                            ;
+
+types                       : TYPES type_declaration_list
+                            ;
+type_declaration_list       : type_declaration
+                            | type_declaration type_declaration_list
+                            ;
+type_declaration            : IDENTIFIER ASSIGN type SEMI_COLON
                             ;
 
 variables                   : VARS declarations_list
@@ -106,7 +117,12 @@ statement_list              :
                             | statement statement_list
                             ;
 
-type                        : IDENTIFIER
+type                        : IDENTIFIER array_size_declaration_list
+                            ;
+array_size_declaration_list :
+                            | array_size_declaration array_size_declaration_list
+                            ;
+array_size_declaration      : OPEN_BRACKET INTEGER CLOSE_BRACKET
                             ;
 
 formal_parameters           : OPEN_PAREN CLOSE_PAREN
@@ -136,7 +152,12 @@ unlabeled_statement         : assignment
 
 assignment                  : variable ASSIGN expression SEMI_COLON
                             ;
-variable                    : IDENTIFIER
+variable                    : IDENTIFIER array_index_list
+                            ;
+array_index_list            :
+                            | array_index array_index_list
+                            ;
+array_index                 : OPEN_BRACKET expression CLOSE_BRACKET
                             ;
 
 function_call_statement     : function_call SEMI_COLON

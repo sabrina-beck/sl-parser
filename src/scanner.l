@@ -12,6 +12,7 @@ LETTER  [a-z]
     /* Comments */
 "//".*
 " "*
+"\t"*
 
     /* Line count */
 \n          line_num++;
