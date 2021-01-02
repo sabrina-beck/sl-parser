@@ -215,18 +215,15 @@ expression                  : binaryop_expression
                             | unop_expression
                             | unop_expression relational_operator binaryop_expression
                             ;
-binaryop_expression         : term additive_operation
+binaryop_expression         : term
+                            | term additive_operator binaryop_expression
                             ;
-unop_expression             : unary_operator term additive_operation
-                            ;
-additive_operation          :
-                            | additive_operator term additive_operation
+unop_expression             : unary_operator term
+                            | unary_operator term additive_operator binaryop_expression
                             ;
 
-term                        : factor multiplicative_operation
-                            ;
-multiplicative_operation    :
-                            | multiplicative_operator factor multiplicative_operation
+term                        : factor
+                            | factor multiplicative_operator term
                             ;
 
 factor                      : value
