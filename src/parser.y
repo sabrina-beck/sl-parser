@@ -72,8 +72,10 @@ function                    : function_header block
                             ;
 
 
-function_header             : IDENTIFIER IDENTIFIER formal_parameters
-                            | VOID IDENTIFIER formal_parameters
+function_header             : function_return_type identifier formal_parameters
+                            ;
+function_return_type        : VOID
+                            | identifier
                             ;
 formal_parameters           : OPEN_PAREN CLOSE_PAREN
                             | OPEN_PAREN formal_parameter_list CLOSE_PAREN
@@ -84,13 +86,15 @@ formal_parameter_list       : formal_parameter
 formal_parameter            : expression_parameter
                             | function_parameter
                             ;
-expression_parameter        : VAR identifier_list COLON IDENTIFIER
-                            | identifier_list COLON IDENTIFIER
+expression_parameter        : VAR identifier_list COLON identifier
+                            | identifier_list COLON identifier
                             ;
 function_parameter          : function_header
+                            ;
 
 
 block                       : labels_section types_section variables_section functions_section body
+                            ;
 
 labels_section              :
                             | labels
@@ -106,18 +110,18 @@ types                       : TYPES type_declaration_list
 type_declaration_list       : type_declaration
                             | type_declaration type_declaration_list
                             ;
-type_declaration            : IDENTIFIER ASSIGN type SEMI_COLON
+type_declaration            : identifier ASSIGN type SEMI_COLON
                             ;
 
 variables_section           :
                             | variables
                             ;
-variables                   : VARS declarations_list
+variables                   : VARS variables_declaration_list
                             ;
-declarations_list           : declaration SEMI_COLON
-                            | declaration SEMI_COLON declarations_list
+variables_declaration_list  : variable_declaration SEMI_COLON
+                            | variable_declaration SEMI_COLON variables_declaration_list
                             ;
-declaration                 : identifier_list COLON type
+variable_declaration        : identifier_list COLON type
                             ;
 
 functions_section           :
@@ -130,17 +134,19 @@ functions_list              : function
                             ;
 
 
-identifier_list             : IDENTIFIER
-                            | IDENTIFIER COMMA identifier_list
+identifier_list             : identifier
+                            | identifier COMMA identifier_list
+                            ;
+identifier                  : IDENTIFIER
                             ;
 
 
-type                        : IDENTIFIER array_size_declaration_list
+type                        : identifier array_size_declaration_list
                             ;
 array_size_declaration_list :
                             | array_size_declaration array_size_declaration_list
                             ;
-array_size_declaration      : OPEN_BRACKET INTEGER CLOSE_BRACKET
+array_size_declaration      : OPEN_BRACKET integer CLOSE_BRACKET
                             ;
 
 
@@ -149,8 +155,10 @@ body                        : OPEN_BRACE statement_list CLOSE_BRACE
 statement_list              :
                             | statement statement_list
                             ;
-statement                   : IDENTIFIER COLON unlabeled_statement
+statement                   : label unlabeled_statement
                             | unlabeled_statement
+                            ;
+label                       : identifier COLON
                             ;
 unlabeled_statement         : assignment
                             | function_call_statement
@@ -162,9 +170,9 @@ unlabeled_statement         : assignment
                             | empty_statement
                             ;
 
-assignment                  : variable ASSIGN expression SEMI_COLON
+assignment                  : value ASSIGN expression SEMI_COLON
                             ;
-variable                    : IDENTIFIER array_index_list
+value                       : identifier array_index_list
                             ;
 array_index_list            :
                             | array_index array_index_list
@@ -174,13 +182,13 @@ array_index                 : OPEN_BRACKET expression CLOSE_BRACKET
 
 function_call_statement     : function_call SEMI_COLON
                             ;
-function_call               : IDENTIFIER OPEN_PAREN expression_list CLOSE_PAREN
-expression_list             :
+function_call               : identifier OPEN_PAREN arguments_list CLOSE_PAREN
+arguments_list              :
                             | expression
-                            | expression COMMA expression_list
+                            | expression COMMA arguments_list
                             ;
 
-goto                        : GOTO IDENTIFIER SEMI_COLON
+goto                        : GOTO identifier SEMI_COLON
                             ;
 
 return                      : RETURN SEMI_COLON
@@ -202,29 +210,33 @@ unlabeled_statement_list    :
 
 empty_statement             : SEMI_COLON
 
-
-expression                  : simple_expression
-                            | simple_expression relational_operator simple_expression
+expression                  : binaryop_expression
+                            | binaryop_expression relational_operator binaryop_expression
                             | unop_expression
-                            | unop_expression relational_operator simple_expression
+                            | unop_expression relational_operator binaryop_expression
                             ;
-simple_expression           : term addition_list
+binaryop_expression         : term additive_operation
                             ;
-unop_expression             : unary_operator term addition_list
-addition_list               :
-                            | additive_operator term addition_list
+unop_expression             : unary_operator term additive_operation
                             ;
-
-term                        : factor multiplicative_list
-                            ;
-multiplicative_list         :
-                            | multiplicative_operator factor multiplicative_list
+additive_operation          :
+                            | additive_operator term additive_operation
                             ;
 
-factor                      : variable
-                            | INTEGER
+term                        : factor multiplicative_operation
+                            ;
+multiplicative_operation    :
+                            | multiplicative_operator factor multiplicative_operation
+                            ;
+
+factor                      : value
+                            | integer
                             | function_call
                             | OPEN_PAREN expression CLOSE_PAREN
+                            ;
+
+
+integer                     : INTEGER
                             ;
 
 
